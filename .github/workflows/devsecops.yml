@@ -6,32 +6,31 @@ on:
       - main
 
 jobs:
-
   security-scan:
 
     runs-on: ubuntu-latest
 
     steps:
 
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
 
-    - name: Build Docker Image
-      run: |
-        docker build -t netflix:latest .
+      - name: Build Docker Image
+        run: |
+          docker build -t netflix:latest .
 
 
-    - name: Trivy Docker Image Scan
-      uses: aquasecurity/trivy-action@master
-      with:
-        image-ref: netflix:latest
-        severity: HIGH,CRITICAL
-        exit-code: 1
+      - name: Trivy Docker Image Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: netflix:latest
+          severity: HIGH,CRITICAL
+          exit-code: 1
 
 
-    - name: SonarQube Scan
-      uses: SonarSource/sonarqube-scan-action@v5
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: http://13.51.158.70:9000
